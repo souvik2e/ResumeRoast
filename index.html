@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ResumeRoast — Find Out Why Recruiters Reject Your Resume In 30 Seconds</title>
+<meta name="description" content="Paste your resume details. Get a brutal honest scorecard — ATS score, HR verdict, salary signal. Free. Instant. Savage.">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── EXTRA STYLES not in main CSS ── */
+.chip-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:100px;padding:7px 16px;font-size:13px;font-weight:600;color:var(--grey);cursor:none;transition:all .2s}
+.chip:hover,.chip.selected{background:rgba(212,160,23,.1);border-color:var(--gold);color:var(--gold2)}
+.scorecard-inner{background:var(--glass);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;text-align:center}
+.sc-header{margin-bottom:16px}
+.sc-name{font-family:var(--ff-display);font-size:22px;font-weight:700;color:var(--cream)}
+.sc-role{font-size:13px;color:var(--grey);margin-top:4px}
+.sc-score-wrap{padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:18px}
+.sc-big-score{font-family:var(--ff-display);font-size:72px;font-weight:900;color:var(--gold);line-height:1}
+.sc-big-score span{font-size:28px;color:var(--grey);font-weight:400}
+.sc-score-label{font-family:var(--ff-mono);font-size:11px;color:var(--grey);letter-spacing:.1em;text-transform:uppercase;margin-top:6px}
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.sc-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:var(--r-sm);padding:12px}
+.sc-item-label{font-family:var(--ff-mono);font-size:9px;color:var(--grey);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px}
+.sc-item-val{font-weight:700;font-size:14px;color:var(--cream)}
+.sc-persona-label{font-family:var(--ff-mono);font-size:11px;color:var(--gold2);letter-spacing:.04em}
+.weakness-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.weakness-item:last-child{border-bottom:none}
+.weakness-icon{font-size:20px;flex-shrink:0;margin-top:1px}
+.weakness-label{font-size:13px;font-weight:600;color:var(--cream);margin-bottom:2px}
+.weakness-desc{font-size:12px;color:var(--grey);line-height:1.5}
+.persona-intro{font-family:var(--ff-mono);font-size:11px;color:var(--grey);font-style:italic;text-align:center;margin-bottom:16px;letter-spacing:.02em}
+.share-scorecard{font-family:'Inter',sans-serif}
+.ssc-brand{font-family:'Space Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.ssc-name{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream)}
+.ssc-role{font-size:13px;color:var(--grey);margin-bottom:16px}
+.ssc-big{font-family:'Playfair Display',serif;font-size:66px;font-weight:900;color:var(--gold);line-height:1;text-align:center}
+.ssc-big small{font-size:24px;color:var(--grey);font-weight:400}
+.ssc-verdict-label{font-family:'Space Mono',monospace;font-size:11px;color:var(--grey);text-align:center;margin-top:4px;margin-bottom:16px;letter-spacing:.06em;text-transform:uppercase}
+.ssc-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.ssc-cell{background:rgba(212,160,23,.08);border:1px solid var(--border);border-radius:10px;padding:12px}
+.ssc-cl{font-family:'Space Mono',monospace;font-size:9px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.ssc-cv{font-weight:700;font-size:13px;color:var(--cream)}
+.ssc-footer{font-family:'Space Mono',monospace;font-size:9px;color:var(--grey);text-align:center;letter-spacing:.05em;text-transform:uppercase}
+.pay-badge{display:inline-flex;align-items:baseline;gap:4px}
+.pay-badge-big{font-family:var(--ff-display);font-size:38px;font-weight:900;color:var(--gold)}
+.pay-badge-label{font-family:var(--ff-mono);font-size:12px;color:var(--grey);letter-spacing:.04em}
+.insta-btn-ig{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#833AB4,#FD1D1D,#FCB045);color:white;font-family:var(--ff-mono);font-size:12px;font-weight:700;padding:12px 22px;border-radius:100px;border:none;cursor:none;transition:all .2s;text-decoration:none;text-transform:uppercase;letter-spacing:.04em}
+.insta-btn-ig:hover{transform:translateY(-2px);opacity:.9}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+<div id="toast"></div>
+
+<!-- ═══ SCORECARD SHARE MODAL ═══ -->
+<div class="modal-overlay" id="scorecard-modal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeScorecardModal()">✕</button>
+    <div id="scorecard-modal-content"></div>
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+      <button class="btn-primary" style="padding:11px 20px;font-size:11px" onclick="screenshotCard()">📸 Screenshot This</button>
+      <button class="btn-outline-gold" onclick="newCardStyle()">🎲 New Style</button>
+      <button class="btn-ghost" onclick="copyInstaCap()">📋 Copy Caption</button>
+    </div>
+    <div style="font-family:var(--ff-mono);font-size:10px;color:var(--grey);text-align:center;margin-top:10px;letter-spacing:.04em">📸 SCREENSHOT → POST ON INSTAGRAM → TAG @RESUMEROAST → WIN LUCKY DRAW</div>
+  </div>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge"><div class="hero-badge-dot"></div>Free · 30 Seconds · Brutally Honest</div>
+  <h1 class="hero-title">
+    <span class="t1">Find Out Why</span>
+    <span class="t2">Recruiters Reject You</span>
+  </h1>
+  <p class="hero-subtitle">Paste your resume details. Get an instant ATS score, HR verdict, and salary signal. Then fix it before they do it for you.</p>
+  <div class="hero-cta"><a href="#form-section" class="btn-primary">📄 Roast My Resume — Free</a></div>
+  <div class="hero-stats">
+    <div class="hstat"><div class="hstat-n" id="stat-roasts">0</div><div class="hstat-l">Resumes Roasted</div></div>
+    <div class="hstat-div"></div>
+    <div class="hstat"><div class="hstat-n" id="stat-interviews">0</div><div class="hstat-l">Interviews Landed</div></div>
+    <div class="hstat-div"></div>
+    <div class="hstat"><div class="hstat-n" id="stat-templates">0</div><div class="hstat-l">Premium Templates</div></div>
+  </div>
+</section>
+
+<!-- ═══ FORM ═══ -->
+<section id="form-section" style="padding:70px 20px;max-width:680px;margin:0 auto">
+  <div class="eyebrow">Step 1</div>
+  <h2 class="section-title">Tell Us About <em>Your Resume</em></h2>
+  <div class="dark-card">
+
+    <div class="field-group">
+      <div class="field-label">😊 Your Name</div>
+      <input type="text" class="field-input" id="inp-name" placeholder="Your full name">
+    </div>
+
+    <div class="field-row">
+      <div class="field-group">
+        <div class="field-label">💼 Current/Latest Role</div>
+        <input type="text" class="field-input" id="inp-role" placeholder="e.g. Marketing Executive">
+      </div>
+      <div class="field-group">
+        <div class="field-label">🎯 Job You're Applying For</div>
+        <input type="text" class="field-input" id="inp-job-target" placeholder="e.g. Product Manager">
+      </div>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">📅 Years of Experience</div>
+      <select class="field-select field-input" id="inp-experience">
+        <option value="">Select experience level</option>
+        <option value="fresher">Fresher / Student</option>
+        <option value="1-2">1–2 years</option>
+        <option value="3-5">3–5 years</option>
+        <option value="5+">5+ years</option>
+      </select>
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">⚡ Your Top Skills (comma separated)</div>
+      <input type="text" class="field-input" id="inp-skills" placeholder="e.g. Python, Excel, Communication, Figma">
+    </div>
+
+    <div class="field-group">
+      <div class="field-label">📝 Paste 2-3 Resume Bullet Points</div>
+      <textarea class="field-textarea" id="inp-bullets" placeholder="e.g. Managed social media accounts for brand&#10;Responsible for coordinating with team members&#10;Helped in achieving quarterly targets"></textarea>
+    </div>
+
+    <div class="field-group" style="margin-bottom:0">
+      <div class="field-label">🎯 Job Category (optional)</div>
+      <div class="chip-row" id="job-category-chips"></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ PERSONA SELECTOR ═══ -->
+<section style="padding:0 20px 50px;max-width:680px;margin:0 auto">
+  <div class="eyebrow">Step 2</div>
+  <h2 class="section-title">Choose <em>Who Roasts You</em></h2>
+  <div class="dark-card">
+    <div style="font-size:13px;color:var(--grey);margin-bottom:16px;line-height:1.6">Free: always the HR Recruiter. Unlock other personas for a different, more specific roast perspective.</div>
+    <div class="persona-grid" id="persona-grid"></div>
+
+    <!-- Persona pay section — shows when locked persona is clicked -->
+    <div id="persona-pay-section" style="display:none;margin-top:20px;padding:20px;background:rgba(212,160,23,.06);border:1px solid var(--border2);border-radius:var(--r-md);text-align:center">
+      <div style="font-family:var(--ff-display);font-size:18px;color:var(--cream);margin-bottom:6px">Unlock <span id="persona-pay-name">This Persona</span></div>
+      <div style="font-size:13px;color:var(--grey);margin-bottom:16px">Get a roast from a completely different perspective — more specific, more useful, more savage.</div>
+      <div class="pay-badge" style="margin-bottom:14px">
+        <div class="pay-badge-big">₹<span id="persona-pay-price">29</span></div>
+        <div class="pay-badge-label">one-time · instant</div>
+      </div>
+      <a href="#" target="_blank" id="persona-pay-btn" class="btn-gold-cta" style="text-decoration:none">🔓 Unlock This Persona</a>
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--grey);margin-top:8px">UPI · Card · NetBanking · Cashfree secure</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ GENERATE BUTTON ═══ -->
+<section style="padding:0 20px 60px;max-width:680px;margin:0 auto">
+  <button class="btn-gold-cta" onclick="generateRoast()" style="font-size:16px;padding:20px">
+    🔥 Get My Resume Score — Free
+  </button>
+  <div style="font-family:var(--ff-mono);font-size:11px;color:var(--grey);text-align:center;margin-top:10px;letter-spacing:.04em">One free roast per device · No card needed · Instant results</div>
+</section>
+
+<!-- ═══ RESULT ═══ -->
+<section id="result-section" style="display:none;padding:0 20px 50px;max-width:680px;margin:0 auto">
+  <div class="eyebrow">Your Results</div>
+  <h2 class="section-title">The <em>Verdict</em> Is In</h2>
+
+  <!-- SCORECARD — THE VIRAL PIECE -->
+  <div id="scorecard" style="margin-bottom:24px"></div>
+
+  <!-- PERSONA INTRO + ROAST TEXT -->
+  <div class="dark-card" style="margin-bottom:20px">
+    <div class="persona-intro" id="persona-intro"></div>
+    <div class="roast-summary">
+      <div class="roast-summary-label">🎤 The Detailed Roast</div>
+      <div class="roast-summary-text" id="roast-text-output"></div>
+    </div>
+  </div>
+
+  <!-- SCORE METER -->
+  <div class="dark-card" style="margin-bottom:20px">
+    <div class="score-meter">
+      <div class="score-label"><span>Resume Strength</span><span id="score-label-val">Analysing...</span></div>
+      <div class="score-track"><div class="score-fill" id="score-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- WEAKNESSES -->
+  <div class="dark-card" style="margin-bottom:20px">
+    <div class="eyebrow" style="text-align:left;margin-bottom:14px">⚠️ Top Weaknesses Found</div>
+    <div id="weakness-list"></div>
+  </div>
+
+  <!-- SIMULATED RESUME WITH RED-PEN MARKS -->
+  <div class="dark-card" style="margin-bottom:20px">
+    <div class="eyebrow" style="text-align:left;margin-bottom:14px">✍️ Red-Pen Annotations</div>
+    <div style="font-size:13px;color:var(--grey);margin-bottom:14px">This is what a recruiter sees — and mentally marks — on your resume.</div>
+    <div class="resume-visual-wrap">
+      <div id="resume-visual-content"></div>
+    </div>
+  </div>
+
+  <!-- SCORECARD UNLOCK — THE SHAREABLE IMAGE -->
+  <div class="dark-card" id="scorecard-unlock-section" style="margin-bottom:20px;text-align:center">
+    <div style="font-family:var(--ff-display);font-size:20px;font-weight:700;color:var(--cream);margin-bottom:8px">
+      Your score is <em style="color:var(--gold)">screenshot-worthy</em> 📸
+    </div>
+    <div style="font-size:13px;color:var(--grey);margin-bottom:16px;line-height:1.6">
+      Unlock the beautiful shareable scorecard image. Post it on LinkedIn, Instagram, or WhatsApp. Every share brings new users. Every tag enters the lucky draw.
+    </div>
+    <div class="pay-badge" style="justify-content:center;margin-bottom:14px">
+      <div class="pay-badge-big">₹19</div>
+      <div class="pay-badge-label">one-time · instant</div>
+    </div>
+    <a href="https://payments.cashfree.com/forms/resumescore" target="_blank" class="btn-gold-cta" style="text-decoration:none" onclick="handleCardPayClick()">
+      📊 Unlock My Shareable Scorecard — ₹19
+    </a>
+    <div style="font-family:var(--ff-mono);font-size:10px;color:var(--grey);margin-top:8px;letter-spacing:.04em">6 unique card designs · Screenshot & post · Makes people ask "what is this?"</div>
+  </div>
+
+  <!-- SHARE BUTTONS — free share even without card -->
+  <div class="dark-card" style="margin-bottom:20px;text-align:center">
+    <div style="font-family:var(--ff-mono);font-size:10px;color:var(--grey);letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px">📢 Share Your Score — Make Others Curious</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+      <button class="btn-outline-gold" onclick="shareWhatsApp()">💬 WhatsApp</button>
+      <button class="btn-outline-gold" onclick="shareLinkedIn()">🔗 LinkedIn</button>
+      <button class="btn-outline-gold" onclick="shareTwitter()">𝕏 Twitter</button>
+      <button class="btn-ghost" onclick="copyShareText()">📋 Copy</button>
+    </div>
+  </div>
+
+  <!-- PRICING — RESUME BUILDER -->
+  <div class="pricing-section" id="builder-pay-section">
+    <div class="eyebrow">Fix It Now</div>
+    <h2 class="section-title" style="font-size:clamp(24px,4vw,36px)">Turn This Score Into <em>Interview Calls</em></h2>
+    <div style="font-size:14px;color:var(--grey);text-align:center;margin-bottom:24px;line-height:1.7">The roast showed you what's wrong. The builder fixes it — for your specific job, with your specific experience, in a premium template that stands out.</div>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="pricing-name">Clean Fix</div>
+        <div class="pricing-amt">₹99</div>
+        <div class="pricing-desc">Rewritten bullet points, 1 professional template, ATS-friendly format</div>
+        <a href="https://payments.cashfree.com/forms/resumebasic" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('basic')">Get Clean Fix →</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-name">Job-Targeted</div>
+        <div class="pricing-amt">₹149</div>
+        <div class="pricing-desc">Tailored for your role + industry, 3 premium template styles, stronger verbs</div>
+        <a href="https://payments.cashfree.com/forms/resumepro" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('pro')">Get Job-Targeted →</a>
+      </div>
+      <div class="pricing-card">
+        <div class="pricing-name">Full Rebuild</div>
+        <div class="pricing-amt">₹199</div>
+        <div class="pricing-desc">Complete rebuild, 12 premium templates, photo placement, cover letter included</div>
+        <a href="https://payments.cashfree.com/forms/resumepremium" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('premium')">Get Full Rebuild →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BUILDER CONTENT (shown after unlock) -->
+  <div id="builder-section" style="display:none;margin-top:28px">
+    <div class="dark-card" id="builder-content"></div>
+  </div>
+
+  <!-- INSTAGRAM LUCKY DRAW -->
+  <div class="insta-section" style="margin-top:28px">
+    <div class="lucky-badge"><div class="lucky-dot"></div>Lucky Draw · Every 10 Days · Real Prizes</div>
+    <div class="insta-heading">Share Your Score.<br>Win <em style="color:var(--gold)">Free Resume Coaching.</em></div>
+    <div class="insta-body">Post your scorecard on Instagram or LinkedIn, tag us, and every 10 days we pick one person for a free premium resume rebuild. Real prize. Could be you.</div>
+    <span class="insta-handle">@resumeroast</span>
+    <div class="insta-buttons">
+      <a href="https://www.instagram.com/resumeroast" target="_blank" class="insta-btn-ig">📸 Tag @resumeroast</a>
+      <button class="btn-ghost" onclick="copyInstaCap()">📋 Copy Caption</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ STORIES MARQUEE ═══ -->
+<section class="stories-section">
+  <div class="eyebrow">Real Results</div>
+  <h2 class="section-title" style="font-size:clamp(22px,4vw,34px);margin-bottom:32px">They Got <em>Roasted.</em><br>Then They Got <em>Hired.</em></h2>
+  <div class="marquee-wrap"><div class="marquee-track" id="marquee-track"></div></div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="faq-section">
+  <div class="eyebrow">Questions</div>
+  <h2 class="section-title" style="font-size:clamp(22px,4vw,34px);margin-bottom:32px">You <em>Asked</em></h2>
+  <div id="faq-list"></div>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="footer-brand">Resume<span>Roast</span></div>
+  <div>Built for the 18–30 year olds getting ghosted by recruiters · © 2025</div>
+  <div style="margin-top:6px;opacity:.6">Not affiliated with any recruiter. This is brutal honesty, not HR advice.</div>
+  <div style="margin-top:8px"><a href="https://instagram.com/resumeroast" target="_blank">@resumeroast on Instagram</a></div>
+</footer>
+
+<script src="data.js"></script>
+<script src="cert.js"></script>
+<script src="logic.js"></script>
+<script>
+/* ── inline helpers that need DOM ── */
+function screenshotCard() {
+  showToast('📸 Long-press the card to save → post on LinkedIn/Instagram → tag @resumeroast for the lucky draw! 🎁', 5000);
+}
+/* wire scorecard modal open to cert.js builder */
+const _origOpenScorecard = openScorecardModal;
+window.openScorecardModal = function() {
+  if (!STATE.cardUnlocked) {
+    showToast('Unlock the scorecard first 🔒');
+    document.getElementById('scorecard-unlock-section')?.scrollIntoView({behavior:'smooth',block:'center'});
+    return;
+  }
+  const html = buildScorecardImage(STATE.name, STATE.jobTarget || STATE.role, STATE.score, STATE.persona);
+  document.getElementById('scorecard-modal-content').innerHTML = html;
+  document.getElementById('scorecard-modal').classList.add('open');
+};
+</script>
+</body>
+</html>
