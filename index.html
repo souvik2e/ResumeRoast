@@ -144,18 +144,22 @@
   <div class="eyebrow">Step 2</div>
   <h2 class="section-title">Choose <em>Who Roasts You</em></h2>
   <div class="dark-card">
-    <div style="font-size:13px;color:var(--grey);margin-bottom:16px;line-height:1.6">Free: always the HR Recruiter. Unlock other personas for a different, more specific roast perspective.</div>
+    <div style="font-size:13px;color:var(--grey);margin-bottom:8px;line-height:1.6">Free: always the HR Recruiter. Unlock other personas for a different, more brutal perspective.</div>
+    <div style="background:rgba(185,28,28,0.06);border:1px solid rgba(185,28,28,0.2);border-radius:var(--r-sm);padding:10px 14px;margin-bottom:16px;font-family:var(--ff-mono);font-size:11px;color:rgba(245,241,232,0.6);line-height:1.6">
+      ⚠️ Real talk: HR sees 200+ resumes a day. The CEO sees yours for 8 seconds. A Startup Founder wants something completely different from Big Tech. <span style="color:var(--gold)">The same resume fails differently with each of them.</span> Knowing which persona destroys yours fastest = knowing exactly what to fix.
+    </div>
     <div class="persona-grid" id="persona-grid"></div>
 
-    <!-- Persona pay section — shows when locked persona is clicked -->
-    <div id="persona-pay-section" style="display:none;margin-top:20px;padding:20px;background:rgba(212,160,23,.06);border:1px solid var(--border2);border-radius:var(--r-md);text-align:center">
-      <div style="font-family:var(--ff-display);font-size:18px;color:var(--cream);margin-bottom:6px">Unlock <span id="persona-pay-name">This Persona</span></div>
-      <div style="font-size:13px;color:var(--grey);margin-bottom:16px">Get a roast from a completely different perspective — more specific, more useful, more savage.</div>
-      <div class="pay-badge" style="margin-bottom:14px">
+    <div id="persona-pay-section" style="display:none;margin-top:20px;padding:22px;background:rgba(212,160,23,0.05);border:1px solid var(--border2);border-radius:var(--r-md);text-align:center">
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">Different Lens. Different Truth.</div>
+      <div style="font-family:var(--ff-display);font-size:18px;color:var(--cream);margin-bottom:6px;line-height:1.35">Unlock <span id="persona-pay-name">This Persona</span></div>
+      <div style="font-size:13px;color:var(--grey);margin-bottom:6px;line-height:1.6">The HR roast is what filters you out automatically. This persona shows you what kills your chances at the next stage — with a completely different set of eyes, priorities, and dealbreakers.</div>
+      <div style="font-family:var(--ff-display);font-size:14px;font-style:italic;color:rgba(245,241,232,0.5);margin-bottom:16px;padding:10px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">"Knowing why the CEO would reject you is worth more than knowing why HR would."</div>
+      <div class="pay-badge" style="justify-content:center;margin-bottom:14px">
         <div class="pay-badge-big">₹<span id="persona-pay-price">29</span></div>
-        <div class="pay-badge-label">one-time · instant</div>
+        <div class="pay-badge-label">one-time · instant unlock</div>
       </div>
-      <a href="#" target="_blank" id="persona-pay-btn" class="btn-gold-cta" style="text-decoration:none">🔓 Unlock This Persona</a>
+      <a href="#" target="_blank" id="persona-pay-btn" class="btn-gold-cta" style="text-decoration:none">🔓 Unlock This Persona Now</a>
       <div style="font-family:var(--ff-mono);font-size:10px;color:var(--grey);margin-top:8px">UPI · Card · NetBanking · Cashfree secure</div>
     </div>
   </div>
@@ -211,20 +215,25 @@
 
   <!-- SCORECARD UNLOCK — THE SHAREABLE IMAGE -->
   <div class="dark-card" id="scorecard-unlock-section" style="margin-bottom:20px;text-align:center">
-    <div style="font-family:var(--ff-display);font-size:20px;font-weight:700;color:var(--cream);margin-bottom:8px">
-      Your score is <em style="color:var(--gold)">screenshot-worthy</em> 📸
+    <div style="font-family:var(--ff-mono);font-size:10px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:12px">⚡ Most people stop here. The hired ones don't.</div>
+    <div style="font-family:var(--ff-display);font-size:22px;font-weight:700;color:var(--cream);margin-bottom:8px;line-height:1.35">
+      Your score is <em style="color:var(--gold)">screenshot-worthy.</em><br>Your rejection isn't.
     </div>
-    <div style="font-size:13px;color:var(--grey);margin-bottom:16px;line-height:1.6">
-      Unlock the beautiful shareable scorecard image. Post it on LinkedIn, Instagram, or WhatsApp. Every share brings new users. Every tag enters the lucky draw.
+    <div style="font-size:13px;color:var(--grey);margin-bottom:10px;line-height:1.7;max-width:420px;margin-left:auto;margin-right:auto">
+      Every person who's posted this scorecard has had at least 3 people ask them "wait, what is that?" That question leads to clicks. Clicks lead to more users. More users means this tool stays free for the next person who needs it.
     </div>
-    <div class="pay-badge" style="justify-content:center;margin-bottom:14px">
+    <div style="font-family:var(--ff-display);font-size:15px;font-style:italic;color:var(--grey);margin-bottom:18px;padding:12px 20px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+      "The only thing worse than a bad resume is a bad resume nobody ever told you about."
+    </div>
+    <div class="pay-badge" style="justify-content:center;margin-bottom:6px">
       <div class="pay-badge-big">₹19</div>
-      <div class="pay-badge-label">one-time · instant</div>
+      <div class="pay-badge-label">one-time · instant · less than a chai</div>
     </div>
-    <a href="https://payments.cashfree.com/forms/resumescore" target="_blank" class="btn-gold-cta" style="text-decoration:none" onclick="handleCardPayClick()">
+    <div style="font-size:12px;color:var(--grey);margin-bottom:16px">6 unique designs · Every card looks different · People will ask where you got it</div>
+    <a href="https://payments.cashfree.com/forms/resumecore" target="_blank" class="btn-gold-cta" style="text-decoration:none" onclick="handleCardPayClick()">
       📊 Unlock My Shareable Scorecard — ₹19
     </a>
-    <div style="font-family:var(--ff-mono);font-size:10px;color:var(--grey);margin-top:8px;letter-spacing:.04em">6 unique card designs · Screenshot & post · Makes people ask "what is this?"</div>
+    <div style="font-family:var(--ff-mono);font-size:10px;color:var(--grey);margin-top:8px;letter-spacing:.04em">UPI · Card · NetBanking · Cashfree secure · Instant unlock</div>
   </div>
 
   <!-- SHARE BUTTONS — free share even without card -->
@@ -240,29 +249,42 @@
 
   <!-- PRICING — RESUME BUILDER -->
   <div class="pricing-section" id="builder-pay-section">
-    <div class="eyebrow">Fix It Now</div>
+    <div class="eyebrow">The Part That Actually Gets You Hired</div>
     <h2 class="section-title" style="font-size:clamp(24px,4vw,36px)">Turn This Score Into <em>Interview Calls</em></h2>
-    <div style="font-size:14px;color:var(--grey);text-align:center;margin-bottom:24px;line-height:1.7">The roast showed you what's wrong. The builder fixes it — for your specific job, with your specific experience, in a premium template that stands out.</div>
+    <div style="font-size:13px;color:var(--grey);text-align:center;margin-bottom:10px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto">The roast showed you what's broken. This fixes it — for your specific job, with your specific experience, in a design that makes recruiters stop scrolling.</div>
+
+    <!-- Emotional force quote -->
+    <div style="background:rgba(212,160,23,0.06);border:1px solid var(--border2);border-radius:var(--r-md);padding:18px 22px;margin-bottom:24px;text-align:center">
+      <div style="font-family:var(--ff-display);font-size:16px;font-style:italic;color:var(--cream);line-height:1.6;margin-bottom:8px">"A recruiter spends 6 seconds on your resume. You spent months on the job search. ₹99 to fix the 6-second problem is either the best investment you'll make this year, or you'll spend another 3 months wondering why nobody's calling back."</div>
+      <div style="font-family:var(--ff-mono);font-size:10px;color:var(--gold);letter-spacing:.08em">THE MATH IS SIMPLE. THE DECISION IS YOURS.</div>
+    </div>
+
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="pricing-name">Clean Fix</div>
         <div class="pricing-amt">₹99</div>
-        <div class="pricing-desc">Rewritten bullet points, 1 professional template, ATS-friendly format</div>
-        <a href="https://payments.cashfree.com/forms/resumebasic" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('basic')">Get Clean Fix →</a>
+        <div class="pricing-desc">Rewritten bullet points with real numbers, 1 ATS-friendly professional template, stronger action verbs throughout</div>
+        <a href="https://payments.cashfree.com/forms/cleanfix" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('basic')">Fix My Resume →</a>
       </div>
       <div class="pricing-card featured">
         <div class="pricing-badge">Most Popular</div>
         <div class="pricing-name">Job-Targeted</div>
         <div class="pricing-amt">₹149</div>
-        <div class="pricing-desc">Tailored for your role + industry, 3 premium template styles, stronger verbs</div>
-        <a href="https://payments.cashfree.com/forms/resumepro" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('pro')">Get Job-Targeted →</a>
+        <div class="pricing-desc">Customised for your exact role and industry, 3 premium template styles, keyword-optimised for ATS, stronger verbs</div>
+        <a href="https://payments.cashfree.com/forms/jobtargeted" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('pro')">Get Job-Targeted →</a>
       </div>
       <div class="pricing-card">
         <div class="pricing-name">Full Rebuild</div>
         <div class="pricing-amt">₹199</div>
-        <div class="pricing-desc">Complete rebuild, 12 premium templates, photo placement, cover letter included</div>
-        <a href="https://payments.cashfree.com/forms/resumepremium" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('premium')">Get Full Rebuild →</a>
+        <div class="pricing-desc">Complete resume rebuilt from scratch, all 12 premium templates, photo placement, cover letter included, LinkedIn summary</div>
+        <a href="https://payments.cashfree.com/forms/fullrebuild" target="_blank" class="pricing-cta" onclick="handleBuilderPayClick('premium')">Full Rebuild →</a>
       </div>
+    </div>
+
+    <!-- Post-pricing emotional closer -->
+    <div style="text-align:center;margin-top:18px;padding:16px;border-top:1px solid var(--border)">
+      <div style="font-family:var(--ff-mono);font-size:11px;color:var(--grey);letter-spacing:.06em">The average Indian job seeker applies to 47 companies before getting one call.</div>
+      <div style="font-family:var(--ff-display);font-size:16px;font-style:italic;color:var(--cream);margin-top:6px">Most of them had a bad resume the whole time.</div>
     </div>
   </div>
 

@@ -128,7 +128,16 @@ function selectPersona(id) {
     if (paySection) {
       _el('persona-pay-name').textContent = persona.label;
       _el('persona-pay-price').textContent = persona.price;
-      const link = `https://payments.cashfree.com/forms/persona${id}`;
+      const personaLinks = {
+        manager:  'https://payments.cashfree.com/forms/managerpersona',
+        cmo:      'https://payments.cashfree.com/forms/personacmo',
+        ceo:      'https://payments.cashfree.com/forms/ceopersona',
+        ladyboss: 'https://payments.cashfree.com/forms/ladyboss',
+        maleboss: 'https://payments.cashfree.com/forms/oldschoolboss',
+        startup:  'https://payments.cashfree.com/forms/startupfounder',
+        fang:     'https://payments.cashfree.com/forms/bigtech',
+      };
+      const link = personaLinks[id] || '#';
       _el('persona-pay-btn').href = link;
       _el('persona-pay-btn').onclick = () => handlePersonaPayClick(id, persona.price);
       paySection.style.display = 'block';
@@ -422,7 +431,7 @@ function openScorecardModal() {
         <div class="ssc-cell"><div class="ssc-cl">Manager</div><div class="ssc-cv">${hmV}</div></div>
         <div class="ssc-cell"><div class="ssc-cl">Salary Signal</div><div class="ssc-cv">${salV}</div></div>
       </div>
-      <div class="ssc-footer">resumeroast.pages.dev · @resumeroast</div>
+      <div class="ssc-footer">resumeroast.byme.workers.dev · @resumeroast</div>
     </div>
   `;
   modal.classList.add('open');
@@ -464,14 +473,14 @@ function selectTemplate(id) {
    SHARE FUNCTIONS — the viral distribution loop
 ══════════════════════════════════════════ */
 function _getShareText() {
-  return `😂 My resume just got destroyed by ResumeRoast.\n\nScore: ${STATE.score}/100\nHR Verdict: ${STATE.score < 40 ? 'Rejected ❌' : 'Maybe Pile ⚠️'}\n\nFind out why recruiters reject yours in 30 seconds 👇\nresumeroast.pages.dev`;
+  return `😂 My resume just got destroyed by ResumeRoast.\n\nScore: ${STATE.score}/100\nHR Verdict: ${STATE.score < 40 ? 'Rejected ❌' : 'Maybe Pile ⚠️'}\n\nFind out why recruiters reject yours in 30 seconds 👇\nresumeroast.byme.workers.dev`;
 }
 function shareWhatsApp() { window.open('https://wa.me/?text=' + encodeURIComponent(_getShareText()), '_blank'); }
 function shareTwitter()  { window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(_getShareText() + '\n@resumeroast'), '_blank'); }
-function shareLinkedIn() { window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://resumeroast.pages.dev'), '_blank'); }
+function shareLinkedIn() { window.open('https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent('https://resumeroast.byme.workers.dev'), '_blank'); }
 function copyShareText() { navigator.clipboard.writeText(_getShareText()).then(() => showToast('Copied! Paste it and watch people click 🔥')); }
 function copyInstaCap() {
-  const text = `My resume got a ${STATE.score}/100 from ResumeRoast 😭\n\nHR verdict: ${STATE.score < 40 ? 'REJECTED ❌' : 'Maybe pile ⚠️'}\n\nFind out why recruiters reject yours 👇\nresumeroast.pages.dev\n\n@resumeroast #resumeroast #jobsearch #careeradvice #resumetips #hireme`;
+  const text = `My resume got a ${STATE.score}/100 from ResumeRoast 😭\n\nHR verdict: ${STATE.score < 40 ? 'REJECTED ❌' : 'Maybe pile ⚠️'}\n\nFind out why recruiters reject yours 👇\nresumeroast.byme.workers.dev\n\n@resumeroast #resumeroast #jobsearch #careeradvice #resumetips #hireme`;
   navigator.clipboard.writeText(text).then(() => showToast('Instagram caption copied! Tag @resumeroast for lucky draw 🎁'));
 }
 
