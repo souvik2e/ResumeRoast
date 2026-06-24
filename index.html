@@ -332,22 +332,22 @@
 <script src="cert.js"></script>
 <script src="logic.js"></script>
 <script>
-/* ── inline helpers that need DOM ── */
 function screenshotCard() {
   showToast('📸 Long-press the card to save → post on LinkedIn/Instagram → tag @resumeroast for the lucky draw! 🎁', 5000);
 }
-/* wire scorecard modal open to cert.js builder */
-const _origOpenScorecard = openScorecardModal;
-window.openScorecardModal = function() {
-  if (!STATE.cardUnlocked) {
-    showToast('Unlock the scorecard first 🔒');
-    document.getElementById('scorecard-unlock-section')?.scrollIntoView({behavior:'smooth',block:'center'});
-    return;
-  }
-  const html = buildScorecardImage(STATE.name, STATE.jobTarget || STATE.role, STATE.score, STATE.persona);
-  document.getElementById('scorecard-modal-content').innerHTML = html;
-  document.getElementById('scorecard-modal').classList.add('open');
-};
+/* Override openScorecardModal after all scripts load */
+document.addEventListener('DOMContentLoaded', function() {
+  window.openScorecardModal = function() {
+    if (!STATE.cardUnlocked) {
+      showToast('Unlock the scorecard first 🔒');
+      document.getElementById('scorecard-unlock-section')?.scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+    const html = buildScorecardImage(STATE.name, STATE.jobTarget || STATE.role, STATE.score, STATE.persona);
+    document.getElementById('scorecard-modal-content').innerHTML = html;
+    document.getElementById('scorecard-modal').classList.add('open');
+  };
+});
 </script>
 </body>
 </html>
